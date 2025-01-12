@@ -6,7 +6,7 @@ import Leaderboard from './Leaderboard';
 import GameModeSelect from './GameModeSelect';
 import Shop from './Shop';
 
-const socket = io('http://localhost:5000', {
+const socket = io(process.env.REACT_APP_API_URL || 'http://localhost:5000', {
   withCredentials: true,
   transports: ['websocket'],
   reconnection: true,
@@ -89,7 +89,7 @@ function App() {
       setUsername(storedUsername);
       
       // Fetch user data including credits
-      fetch('http://localhost:5000/api/user-data', {
+      fetch(`${process.env.REACT_APP_API_URL}/api/user-data`, {
           headers: {
               'Authorization': `Bearer ${token}`
           },
@@ -134,7 +134,7 @@ function App() {
     const fetchCredits = async () => {
       if (isAuthenticated) {
         try {
-          const response = await fetch('http://localhost:5000/api/credits', {
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/api/credits`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -158,7 +158,7 @@ function App() {
       setIsAuthenticated(true);
       setUsername(storedUsername);
       
-      fetch('http://localhost:5000/api/user-data', {
+      fetch(`${process.env.REACT_APP_API_URL}/api/user-data`, {
           headers: {
               'Authorization': `Bearer ${token}`
           }
@@ -328,7 +328,7 @@ function App() {
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/leaderboard');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/leaderboard`);
       const data = await response.json();
       setLeaderboardData(data);
     } catch (error) {
@@ -521,7 +521,7 @@ function App() {
     // Add error handling for account creation
   const createAccount = async (userData) => {
     try {
-      const response = await fetch('http://localhost:3001/api/signup', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -599,7 +599,7 @@ function App() {
     // Add periodic credits refresh
     const refreshInterval = setInterval(() => {
       if (isAuthenticated) {
-        fetch('http://localhost:5000/api/user-data', {
+        fetch(`${process.env.REACT_APP_API_URL}/api/user-data`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -730,7 +730,7 @@ function App() {
             localStorage.setItem('username', userData.username);
             
             // Immediately fetch fresh user data after login
-            fetch('http://localhost:5000/api/user-data', {
+            fetch(`${process.env.REACT_APP_API_URL}/api/user-data`, {
                 headers: {
                     'Authorization': `Bearer ${userData.token}`
                 }
