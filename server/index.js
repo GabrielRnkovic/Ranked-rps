@@ -14,14 +14,18 @@ const server = http.createServer(app);
 // CORS Configuration
 const io = socketIo(server, {
     cors: {
-        origin: ["http://localhost:3000"],
+        origin: process.env.NODE_ENV === 'production' 
+            ? ["https://ranked-rps-test.vercel.app"]
+            : ["http://localhost:3000"],
         methods: ["GET", "POST"],
         credentials: true
     }
 });
 
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: process.env.NODE_ENV === 'production'
+        ? "https://ranked-rps-test.vercel.app"
+        : "http://localhost:3000",
     credentials: true
 }));
 
